@@ -1,0 +1,504 @@
+/* --- CSS Reset & Variables --- */
+:root {
+    --bg-dark: #081114;
+    --card-bg: rgba(26, 32, 35, 0.5); /* Slightly transparent dark background */
+    --cyan-primary: #00f2fe;
+    --cyan-glow: rgba(0, 242, 254, 0.4);
+    --text-main: #ffffff;
+    --text-muted: #a0aab2;
+    --input-bg: #1a1e21;
+    --input-border: #2a3135;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: var(--text-main);
+    background-color: var(--bg-dark);
+    
+    /* Link to the SVG (Note the ../ to go up one folder from /css to /assets) */
+    background-image: url('../assets/background.svg');
+    
+    /* Ensure the SVG covers the whole screen without repeating */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* Keeps the background still while scrolling */
+
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* --- Utility Classes --- */
+/* Hides labels visually but keeps them for screen readers (Semantic accessibility) */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+/* --- Layout --- */
+.login-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 5rem;
+    width: 100%;
+    max-width: 1200px;
+    padding: 2rem;
+}
+
+/* Left Section */
+.branding-section {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    min-width: 300px;
+}
+
+.logo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.brand-logo {
+    width: 300px;
+    max-width: 100%;
+    height: auto;
+    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5));
+}
+
+.brand-text {
+    width: 270px;
+    height: auto;
+}
+
+/* Right Section */
+.form-section {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    min-width: 350px;
+}
+
+/* --- Card UI --- */
+.login-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(1px);
+    width: 100%;
+    max-width: 480px;
+    padding: 3rem 2rem 5rem 2rem;
+    border-radius: 16px;
+    border: 2px solid rgba(0, 241, 254, 0.463);
+    /* This creates the outer and inner cyan glow */
+    box-shadow: 0 0 20px var(--cyan-glow), inset 0 0 10px rgba(0, 242, 254, 0.1);
+}
+
+.card-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    max-width: 1000px;
+    justify-self: center;
+}
+
+.card-header h1 {
+    font-size: 2.3rem;
+    font-weight: 800;
+    margin-bottom: 2rem;
+}
+
+.card-header p {
+    color: var(--text-muted);
+    font-size: 1rem;
+}
+
+/* --- Form Elements --- */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Input Wrapper styling to hold the icon and input field together */
+.input-group {
+    display: flex;
+    align-items: center;
+    background-color: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+    padding: 0 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input-group:focus-within {
+    border-color: var(--cyan-primary);
+    box-shadow: 0 0 8px rgba(0, 242, 254, 0.3);
+}
+
+.input-icon {
+    width: 18px;
+    height: 18px;
+    color: var(--text-muted);
+    margin-right: 0.75rem;
+}
+
+.input-group input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--text-main);
+    padding: 1rem 0;
+    font-size: 0.95rem;
+    outline: none;
+}
+
+.input-group input::placeholder {
+    color: var(--text-muted);
+}
+
+/* Button */
+.btn-primary {
+    background-color: var(--cyan-primary);
+    color: #000000;
+    font-weight: 600;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 2.5rem;
+    cursor: pointer;
+    transition: background-color 0.4s ease, color 0.4s ease, box-shadow 0.2s ease;
+    box-shadow: 0 0 15px var(--cyan-glow);
+}
+
+.btn-primary:hover {
+    background-color: #011e22; 
+    color: var(--cyan-primary);
+    box-shadow: 0 0 25px var(--cyan-glow);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+/* --- Footer --- */
+.card-footer {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.card-footer a {
+    color: var(--cyan-primary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.card-footer a:hover {
+    color: #ffffff;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+    .login-wrapper {
+        flex-direction: column;
+        gap: 3rem;
+    }
+    
+    .login-card {
+        padding: 3rem 1.5rem;
+    }
+}
+
+/* --- Register Template  --- */
+/* Centers the form when there is no logo next to it */
+.centered-form {
+    justify-content: center;
+    flex: 100%; 
+}
+
+.centered-form .login-card {
+    max-width: 600px; /* Increased from 500px */
+    padding: 5rem 3rem;
+}
+
+/* --- Form Layout Modifiers --- */
+/* Groups inputs side-by-side for the register form */
+.input-row {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+}
+
+.input-row .input-group {
+    flex: 1;
+    min-width: 0;
+}
+
+@media (max-width: 480px) {
+    .input-row {
+        flex-direction: column;
+    }
+}
+
+/* =========================================
+            --- DASHBOARD --- 
+========================================= */
+
+body.dashboard-body {
+    display: flex; 
+    flex-direction: column;
+    height: 100vh;
+    overflow-y: auto; 
+    
+    /* Forces the background to stretch across the dashboard */
+    background-color: var(--bg-dark);
+    background-image: url('../assets/background.svg');
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+/* --- Reusable True Glass Panel --- */
+.glass-panel {
+    background: rgba(15, 20, 24, 0.4); /* Perfect balance to see background */
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(0, 242, 254, 0.15);
+    border-radius: 16px;
+    box-shadow: 0 0 20px rgba(0, 242, 254, 0.05), inset 0 0 10px rgba(0, 242, 254, 0.02);
+}
+
+/* --- Top Navigation --- */
+.top-navbar {
+    display: flex;
+    justify-content: space-between; /* Pushes left and right sides apart */
+    align-items: center;
+    margin: 0;
+    width: 100%;
+    
+    /* THE FIX: Remove border radius and side borders so it sits perfectly flush */
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    
+    /* Adjust padding to keep the logo and buttons away from the extreme edges */
+    padding: 1rem 4rem;
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.mini-logo {
+    width: 150px;
+    height: auto;
+}
+
+.brand-name {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text-main);
+    letter-spacing: 0.5px;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem; /* Controls the exact space between the button, user info, and logout */
+}
+
+/* --- Create Quiz Button --- */
+.create-quiz-btn {
+    position: relative; /* Allows us to stack the images inside */
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex; /* Ensures the button boundary hugs the image tightly */
+}
+
+.create-quiz-btn img {
+    height: 40px; /* Adjust this to match your username/logout icon height */
+    width: auto;
+    display: block;
+    transition: opacity 0.4s ease-in-out; /* Controls the crossfade speed */
+}
+
+/* Force the hover image to sit perfectly on top of the normal image */
+.create-quiz-btn .img-hover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0; /* Hidden by default */
+}
+
+.create-quiz-btn:hover .img-normal {
+    opacity: 0; /* Fade out */
+}
+
+.create-quiz-btn:hover .img-hover {
+    opacity: 1; /* Fade in */
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    text-align: left; /* Fixes the text alignment from the previous version */
+    border-right: 1px solid rgba(255, 255, 255, 0.15); /* The vertical divider */
+    padding-right: 1.5rem; /* Space between the text and the divider line */
+}
+
+.user-info .username {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-main);
+}
+
+.user-info .email {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.logout-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    border-radius: 8px;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.logout-btn:hover {
+    background: rgba(255, 75, 75, 0.1);
+    transform: scale(1.1);
+}
+
+.logout-icon {
+    width: 24px;
+    height: 24px;
+}
+
+/* --- Main Content (Edge-to-Edge) --- */
+.dashboard-main-full {
+    flex: 1; /* Forces it to fill all remaining vertical space below the nav */
+    width: 100%;
+    box-sizing: border-box; /* Prevents the padding from causing horizontal scrolling */
+    
+    /* Apply the dark interface directly to the full area */
+    background: rgba(8, 12, 15, 0.75); 
+
+    
+    /* A faint top border to separate it cleanly from the navbar */
+    border-top: 1px solid rgba(0, 242, 254, 0.05); 
+    
+    /* 4rem left/right padding aligns the text perfectly with your navbar items */
+    padding: 3rem 4rem; 
+    
+    display: flex;
+    flex-direction: column;
+}
+
+.content-header {
+    margin-bottom: 1rem;
+}
+
+.content-header h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    color: var(--text-main);
+    letter-spacing: -0.5px;
+}
+
+/* --- Sleek Underline Tabs --- */
+.tabs {
+    display: flex;
+    gap: 2.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 0; /* Removes bottom padding so the border touches the active underline */
+}
+
+.tab {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    font-weight: 500;
+    padding: 0 0 1rem 0; /* Padding only on the bottom */
+    cursor: pointer;
+    transition: color 0.3s ease;
+    position: relative;
+}
+
+.tab:hover {
+    color: var(--text-main);
+}
+
+.tab.active {
+    color: var(--cyan-primary);
+    font-weight: 600;
+}
+
+/* The Cyan Underline Effect for Active Tab */
+.tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; /* Pulls it down to perfectly overlap the container's faint border */
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(--cyan-primary);
+    border-radius: 3px 3px 0 0;
+    box-shadow: 0 -2px 10px rgba(0, 242, 254, 0.4);
+}
+
+/* --- Minimalist Empty State --- */
+.empty-state {
+    flex: 1; /* Pushes the empty state to perfectly center in the remaining space */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 7.5rem;
+    text-align: center;
+}
+
+.empty-state h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--text-main);
+}
+
+.empty-state p {
+    color: var(--text-muted);
+    margin-bottom: 2.5rem; /* Large gap before the button */
+    font-size: 1.1rem;
+}
+
+/* Modifier to push the button down slightly */
+.mt-4 {
+    margin-top: 1rem;
+}
