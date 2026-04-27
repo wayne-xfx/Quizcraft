@@ -177,7 +177,7 @@ body {
     color: #000000;
     font-weight: 600;
     font-size: 1rem;
-    border: none;
+    border: 1px solid transparent;
     border-radius: 8px;
     padding: 1rem;
     margin-top: 2.5rem;
@@ -189,6 +189,7 @@ body {
 .btn-primary:hover {
     background-color: #011e22; 
     color: var(--cyan-primary);
+    border-color: var(--cyan-primary);
     box-shadow: 0 0 25px var(--cyan-glow);
 }
 
@@ -501,4 +502,66 @@ body.dashboard-body {
 /* Modifier to push the button down slightly */
 .mt-4 {
     margin-top: 1rem;
+}
+
+/* =========================================
+            --- LOGOUT MODAL --- 
+========================================= */
+
+.modal-overlay {
+    display: none; /* Hidden until triggered via Javascript */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.75); 
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.logout-modal {
+    background: #0d1518; /* Dark background matching your dashboard */
+    border: 1px solid var(--cyan-primary);
+    border-radius: 12px;
+    padding: 3rem 4rem;
+    text-align: center;
+    max-width: 500px;
+}
+
+.modal-title {
+    color: var(--cyan-primary);
+    font-size: 1.8rem;
+    font-weight: 400; /* Lighter font weight to match the reference */
+    line-height: 1.4;
+    margin-bottom: 2.5rem;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+/* Recreating the specific button style from the image */
+.modal-btn {
+    background-color: var(--cyan-primary);
+    color: #000000;
+    font-weight: 500;
+    font-size: 1.1rem;
+    border: 1px solid transparent;
+    border-radius: 20px; /* Gives it the perfectly rounded pill shape */
+    padding: 0.8rem 3rem;
+    cursor: pointer;
+    transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.2s ease;
+}
+
+.modal-btn:hover {
+    background-color: #011e22;
+    color: var(--cyan-primary);
+    border-color: var(--cyan-primary);
+    box-shadow: 0 0 25px var(--cyan-glow);
 }
