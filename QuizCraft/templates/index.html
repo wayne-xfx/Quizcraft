@@ -9,43 +9,24 @@
 </head>
 <body class="dashboard-body">
 
-    <nav class="top-navbar glass-panel">
-        <div class="nav-left">
-            <img src="../assets/icons/mini_logo.svg" alt="QuizCraft Logo" class="mini-logo">
-        </div>
-        
-        <div class="nav-right">
-            <button class="create-quiz-btn" aria-label="Create a Quiz">
-                <img src="../assets/icons/create_quiz_button.svg" alt="" class="img-normal">
-                <img src="../assets/icons/create_quiz_button_hover.svg" alt="" class="img-hover">
-            </button>
-            
-            <div class="user-info">
-                <span class="username">Karl Dave</span>
-                <span class="email">karldave@example.com</span>
-            </div>
-            
-            <a href="login.html" class="logout-btn">
-                <img src="../assets/icons/logout_button.svg" alt="Logout" class="logout-icon">
-            </a>
-        </div>
-    </nav>
+    <div id="navbar-container"></div>
 
     <main class="dashboard-main-full">
             
-            <header class="content-header">
-                <h1>Welcome, Karl Dave!</h1>
-                <div class="tabs">
-                    <button class="tab active">Community Quizzes</button>
-                    <button class="tab">My Quizzes</button>
-                </div>
-            </header>
+        <header class="content-header">
+            <h1>Welcome, Karl Dave!</h1>
+            <div class="tabs">
+                <button class="tab active">Community Quizzes</button>
+                <button class="tab">My Quizzes</button>
+            </div>
+        </header>
 
-            <section class="empty-state">
-                <h2>Every great quiz starts with one question.</h2>
-                <p>Create your first quiz now!</p>
-            </section>
+        <section class="empty-state">
+            <h2>Every great quiz starts with one question.</h2>
+            <p>Create your first quiz now!</p>
+        </section>
 
-        </main>
+    </main>
+    <script src="navbar.js"></script>
 </body>
 </html>
