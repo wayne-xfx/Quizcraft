@@ -26,13 +26,13 @@
                     <p>Your journey begins with a single question.</p>
                 </header>
                 
-                <!--/* the method should be set to POST when backend is integrated */-->
-                <form action="index.html" method="GET" class="login-form"> 
+                <form id="loginForm" class="login-form"> 
                     
+                    <!-- 1. Changed this from Email to Username to match the backend database -->
                     <div class="input-group">
-                        <label for="email" class="sr-only">Email Address</label>
-                        <img src="../assets/icons/email.svg" alt="" aria-hidden="true" class="input-icon">                        
-                        <input type="email" id="email" name="email" placeholder="Email Address" required>
+                        <label for="username" class="sr-only">Username</label>
+                        <img src="../assets/icons/user.svg" alt="" aria-hidden="true" class="input-icon">                        
+                        <input type="text" id="username" name="username" placeholder="Username" required>
                     </div>
 
                     <div class="input-group">
@@ -40,6 +40,9 @@
                         <img src="../assets/icons/lock.svg" alt="" aria-hidden="true" class="input-icon">
                         <input type="password" id="password" name="password" placeholder="Password" required>
                     </div>
+
+                    <!-- 2. Added the message div for errors/success text -->
+                    <div id="message" style="text-align: center; color: #d9534f; margin-bottom: 15px; font-weight: 500;"></div>
 
                     <button type="submit" class="btn-primary">Log In</button>
                 </form>
@@ -53,5 +56,10 @@
 
     </main>
 
+    <!-- 3. Connected the Javascript file and told it to use the "login" logic -->
+    <script src="../js/auth.js"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', (e) => handleAuth(e, 'login'));
+    </script>
 </body>
 </html>

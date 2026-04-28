@@ -18,8 +18,9 @@
                     <h1>Welcome to Quizcraft</h1>
                     <p>Join us on QuizCraft and start crafting your quizzes!</p>
                 </header>
-                <!-- the method should be set to POST when backend is integrated -->
-                <form action="#" method="GET" class="login-form">
+                
+                <!-- 1. Added id="registerForm" to the form tag -->
+                <form id="registerForm" class="login-form">
                     
                     <div class="input-group">
                         <label for="email" class="sr-only">Email Address</label>
@@ -47,11 +48,14 @@
                         </div>
                     </div>
 
+                    <!-- 2. Added the message div right above the submit button -->
+                    <div id="message" style="text-align: center; color: #d9534f; margin-bottom: 15px; font-weight: 500;"></div>
+
                     <button type="submit" class="btn-primary">Sign Up</button>
                 </form>
 
                 <footer class="card-footer">
-                    <p>Already have an account? <a href="login.html">Log In</a></p>
+                    <p>Already have an account? <a href="login">Log In</a></p>
                 </footer>
 
             </div>
@@ -59,5 +63,10 @@
 
     </main>
 
+    <!-- 3. Added the Javascript connection at the very bottom -->
+    <script src="../js/auth.js"></script>
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', (e) => handleAuth(e, 'register'));
+    </script>
 </body>
 </html>

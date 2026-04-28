@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const path = require('path');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken'); // NEW: Added the JWT package
@@ -81,6 +82,19 @@ app.post('/api/login', async (req, res) => {
         console.error(error);
         res.status(500).json({ message: "Server error during login" });
     }
+});
+
+// Tell Express where to find your CSS, Images, and JS files
+app.use(express.static(path.join(__dirname, 'QuizCraft')));
+
+// Map the /register URL to the register.html file
+app.get('/register', (req, res) => {
+    res.sendFile(path.join(__dirname, 'QuizCraft', 'templates', 'register.html'));
+});
+
+// Map the /login URL to the login.html file
+app.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, 'QuizCraft', 'templates', 'login.html'));
 });
 
 // --- START SERVER ---
