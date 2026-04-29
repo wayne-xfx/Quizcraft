@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Quiz - QuizCraft</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-body">
+
+    <div id="navbar-container"></div>
+
+    <main class="dashboard-main-full">
+        <div class="create-quiz-wrapper">
+            
+            <header class="page-header">
+                <h1>Create a New Quiz</h1>
+                <p>Fill in the details for your custom quiz</p>
+            </header>
+
+            <section class="quiz-config-section">
+                
+                <div class="config-main-panel glass-panel">
+                    
+                    <div class="config-details">
+                        <h3>Quiz Details</h3>
+                        <p class="subtext">Enter basic information about your quiz</p>
+                        
+                        <div class="form-group mt-2">
+                            <label>Quiz Title</label>
+                            <input type="text" class="custom-input" placeholder="Enter quiz title...">
+                        </div>
+                        
+                        <div class="toggle-group mt-2">
+                            <span class="toggle-label">Enable Smart Review</span>
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="config-thumbnail">
+                        <h3>Quiz Thumbnail(Optional)</h3>
+                        <div class="upload-area mt-2">
+                            
+                            <input type="file" id="thumbnail-upload" accept="image/png, image/jpeg" class="sr-only" aria-hidden="true">
+
+                            <button type="button" class="upload-icon-box" id="icon-upload-trigger" aria-label="Upload Thumbnail">
+                                <img src="../assets/icons/upload.svg" alt="Upload Icon" class="upload-svg">
+                            </button>
+
+                            <div class="upload-info">
+                                <span class="upload-title">Upload an image</span>
+                                <span class="upload-limits">Max 5MB, JPG/PNG</span>
+                                <button type="button" class="btn-browse" id="btn-upload-trigger">Browse Files</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="config-sidebar">
+                    <h3>Privacy:</h3>
+                    <select class="privacy-select glass-panel">
+                        <option>Select</option>
+                        <option>Public</option>
+                        <option>Private</option>
+                    </select>
+                </div>
+
+            </section>
+
+            <section class="questions-section mt-4">
+                <div class="questions-header">
+                    <h2>Questions</h2>
+                    <button class="btn-add-question">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 5px;">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Add Question
+                    </button>
+                </div>
+                
+                <div class="questions-empty-state glass-panel">
+                    <p class="empty-title">No questions added yet</p>
+                    <p class="empty-subtext">Click the button above to add questions</p>
+                </div>
+            </section>
+
+            <div class="form-actions mt-2">
+                <button class="btn-cancel">Cancel</button>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="../js/navbar.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const fileInput = document.getElementById('thumbnail-upload');
+        const iconTrigger = document.getElementById('icon-upload-trigger');
+        const btnTrigger = document.getElementById('btn-upload-trigger');
+
+        // 1. Trigger hidden file input when the Icon Box is clicked
+        iconTrigger.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        // 2. Trigger hidden file input when 'Browse Files' is clicked
+        btnTrigger.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        // 3. Optional: Visual feedback when a file is selected
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                const fileName = e.target.files[0].name;
+                // Grabs the element that says "Upload an image" and replaces it with the file name
+                document.querySelector('.upload-title').textContent = fileName;
+                document.querySelector('.upload-title').style.color = '#00FFF6';
+            }
+        });
+    });
+</script>
+</body>
+</html>
