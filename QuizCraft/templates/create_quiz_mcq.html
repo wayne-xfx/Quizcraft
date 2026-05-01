@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Multiple Choice Quiz - QuizCraft</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-body">
+
+    <div id="navbar-container"></div>
+
+    <main class="dashboard-main-full">
+        <div class="create-quiz-wrapper">
+            
+            <header class="page-header">
+                <h1>Create a New Quiz</h1>
+                <p>Fill in the details for your custom quiz</p>
+            </header>
+
+            <section class="quiz-config-section">
+                <div class="config-main-panel glass-panel">
+                    <div class="config-details">
+                        <h3>Quiz Details</h3>
+                        <p class="subtext">Enter basic information about your quiz</p>
+                        
+                        <div class="form-group mt-2">
+                            <label>Quiz Title</label>
+                            <input type="text" class="custom-input" placeholder="Enter quiz title...">
+                        </div>
+                        
+                        <div class="toggle-group mt-2">
+                            <span class="toggle-label">Enable Smart Review</span>
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="config-thumbnail">
+                        <h3>Quiz Thumbnail(Optional)</h3>
+                        <div class="upload-area mt-2">
+                            <input type="file" id="thumbnail-upload" accept="image/png, image/jpeg" class="sr-only" aria-hidden="true">
+                            <button type="button" class="upload-icon-box" id="icon-upload-trigger" aria-label="Upload Thumbnail">
+                                <img src="../assets/icons/upload.svg" alt="Upload Icon" class="upload-svg">
+                            </button>
+                            <div class="upload-info">
+                                <span class="upload-title">Upload an image</span>
+                                <span class="upload-limits">Max 5MB, JPG/PNG</span>
+                                <button type="button" class="btn-browse" id="btn-upload-trigger">Browse Files</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="config-sidebar">
+                    <h3>Privacy:</h3>
+                    <select class="privacy-select glass-panel">
+                        <option>Select</option>
+                        <option>Public</option>
+                        <option>Private</option>
+                    </select>
+                </div>
+            </section>
+
+            <section class="questions-section mt-4">
+                <div class="questions-header">
+                    <h2>Questions</h2>
+                    <button type="button" class="btn-add-question" id="add-question-btn">
+                        Add Question
+                    </button>
+                </div>
+                
+                <!-- The Empty State (Visible by default) -->
+                <div class="questions-empty-state glass-panel" id="empty-state">
+                    <p class="empty-title">No questions added yet</p>
+                    <p class="empty-subtext">Click the button above to add questions</p>
+                </div>
+                
+                <!-- The Container for dynamically added questions -->
+                <div id="questions-container"></div>
+            </section>
+
+            <div class="form-actions mt-2">
+                <button type="button" class="btn-cancel" id="btn-trigger-cancel">Cancel</button>
+                <button class="btn-save">Save Quiz</button>
+            </div>
+
+        </div>
+
+        <!-- Cancel Confirmation Modal -->
+        <div class="modal-overlay" id="cancel-modal-overlay">
+            <div class="cancel-modal">
+                <h2 class="cancel-modal-title">Are you sure you want to cancel?</h2>
+                <div class="modal-buttons">
+                    <button type="button" class="modal-btn" id="btn-confirm-cancel">Yes</button>
+                    <button type="button" class="modal-btn" id="btn-close-cancel">No</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/navbar.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const fileInput = document.getElementById('thumbnail-upload');
+            const iconTrigger = document.getElementById('icon-upload-trigger');
+            const btnTrigger = document.getElementById('btn-upload-trigger');
+
+            iconTrigger.addEventListener('click', () => {
+                fileInput.click();
+            });
+
+            btnTrigger.addEventListener('click', () => {
+                fileInput.click();
+            });
+
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    const fileName = e.target.files[0].name;
+                    document.querySelector('.upload-title').textContent = fileName;
+                    document.querySelector('.upload-title').style.color = '#00FFF6';
+                }
+            });
+        });
+
+        // --- ADD QUESTION LOGIC ---
+        const btnAddQuestion = document.getElementById('add-question-btn');
+        const questionsContainer = document.getElementById('questions-container');
+        const emptyState = document.getElementById('empty-state');
+        
+        let questionCounter = 0;
+
+        btnAddQuestion.addEventListener('click', () => {
+            questionCounter++;
+
+            // Hide the empty state message
+            if (emptyState) {
+                emptyState.style.display = 'none';
+            }
+
+            // Create the new question block wrapper
+            const questionBlock = document.createElement('div');
+            questionBlock.className = 'question-block glass-panel mt-2';
+            
+            // Note: We use ${questionCounter} dynamically so the radio buttons group properly per question!
+            questionBlock.innerHTML = `
+                <div class="question-header">
+                    <h3 class="question-number">Question ${questionCounter}</h3>
+                    <button type="button" class="btn-remove">Remove</button>
+                </div>
+
+                <div class="form-group mt-2">
+                    <label>Question Text</label>
+                    <input type="text" class="custom-input" placeholder="Enter your question...">
+                </div>
+
+                <div class="form-group mt-2">
+                    <label>Answer Options <span class="label-subtext">(Click the circle of the correct answer)</span></label>
+                    
+                    <div class="mcq-grid mt-1">
+                        <div class="mcq-option">
+                            <input type="radio" name="q${questionCounter}-correct" class="mcq-radio">
+                            <input type="text" class="custom-input" placeholder="Option A">
+                        </div>
+                        <div class="mcq-option">
+                            <input type="radio" name="q${questionCounter}-correct" class="mcq-radio">
+                            <input type="text" class="custom-input" placeholder="Option B">
+                        </div>
+                        <div class="mcq-option">
+                            <input type="radio" name="q${questionCounter}-correct" class="mcq-radio">
+                            <input type="text" class="custom-input" placeholder="Option C">
+                        </div>
+                        <div class="mcq-option">
+                            <input type="radio" name="q${questionCounter}-correct" class="mcq-radio">
+                            <input type="text" class="custom-input" placeholder="Option D">
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+
+            // Add the remove functionality to this specific block
+            const btnRemove = questionBlock.querySelector('.btn-remove');
+            btnRemove.addEventListener('click', () => {
+                questionBlock.remove();
+                updateQuestionNumbers();
+                
+                // Bring back the empty state if all questions are deleted
+                if (questionsContainer.children.length === 0) {
+                    emptyState.style.display = 'flex'; 
+                    questionCounter = 0; 
+                }
+            });
+
+            // Append it to the page
+            questionsContainer.appendChild(questionBlock);
+            
+            // Auto-scroll smoothly to the bottom so users see the new question when added  
+            questionsContainer.scrollTo({
+                top: questionsContainer.scrollHeight,
+                behavior: 'smooth'
+            });
+        });
+
+
+        
+        // --- CANCEL MODAL LOGIC ---
+        const btnTriggerCancel = document.getElementById('btn-trigger-cancel');
+        const cancelModalOverlay = document.getElementById('cancel-modal-overlay');
+        const btnConfirmCancel = document.getElementById('btn-confirm-cancel');
+        const btnCloseCancel = document.getElementById('btn-close-cancel');
+
+        // Show the modal when Cancel is clicked
+        btnTriggerCancel.addEventListener('click', () => {
+            cancelModalOverlay.style.display = 'flex';
+        });
+
+        // Hide the modal when 'No' is clicked
+        btnCloseCancel.addEventListener('click', () => {
+            cancelModalOverlay.style.display = 'none';
+        });
+
+        // Redirect to dashboard when 'Yes' is clicked
+        btnConfirmCancel.addEventListener('click', () => {
+            window.location.href = 'dashboard'; 
+        });
+
+        // Helper function to cleanly re-number questions if one gets deleted
+        function updateQuestionNumbers() {
+            const blocks = questionsContainer.querySelectorAll('.question-block');
+            blocks.forEach((block, index) => {
+                const newNum = index + 1;
+                block.querySelector('.question-number').textContent = `Question ${newNum}`;
+                
+                // Update radio group names so they don't break
+                const radios = block.querySelectorAll('.mcq-radio');
+                radios.forEach(radio => {
+                    radio.name = `q${newNum}-correct`;
+                });
+            });
+            questionCounter = blocks.length; // Keep the global counter in sync
+        }
+        
+        // --- SAVE QUIZ ---
+        const btnSave = document.querySelector('.btn-save');
+
+        btnSave.addEventListener('click', async () => {
+            // 1. Gather the basic quiz data
+            const titleInput = document.querySelector('.config-details .custom-input').value;
+            const quizTitle = titleInput.trim() !== '' ? titleInput : 'Untitled Quiz';
+
+            // 2. Format the payload for the backend
+            const quizPayload = {
+                title: quizTitle,
+                creator: 'Karl Dave', // Eventually dynamically set by backend session
+                totalQuestions: questionCounter
+                // Note: You will eventually loop through your question blocks to push the actual question text/answers into this payload
+            };
+
+            try {
+                // 3. Send data to the backend (Your backend dev will provide the exact URL)
+                const response = await fetch('/api/quizzes/create', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(quizPayload)
+                });
+
+                // 4. Redirect to dashboard if the server successfully saved it
+                if (response.ok) {
+                    window.location.href = 'dashboard';
+                } else {
+                    alert("Error: The server could not save the quiz.");
+                }
+            } catch (error) {
+                console.error("Server connection failed:", error);
+                alert("Failed to connect to the backend server.");
+            }
+        });
+    </script>
+</body>
+</html>

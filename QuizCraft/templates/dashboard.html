@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - QuizCraft</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-body">
+
+    <div id="navbar-container"></div>   
+
+    <main class="dashboard-main-full">
+            
+        <header class="content-header">
+            <h1>Welcome, Karl Dave!</h1>
+            <div class="tabs">
+                <button class="tab" id="tab-community">Community Quizzes</button>
+                <button class="tab active" id="tab-my-quizzes">My Quizzes</button>
+            </div>
+        </header>
+
+        <!-- Community Quizzes Content (Visible by default) -->
+        <section id="content-community" class="empty-state" style="display: none;">
+            <h2>Explore the IT Trivia Community Quizzes.</h2>
+            <p>Discover and play quizzes from different fields!</p>
+        </section>
+
+        <!-- My Quizzes Content -->
+        <section id="content-my-quizzes" style="display: none; width: 100%;">
+            
+            <!-- Empty State Container -->
+            <div id="my-quizzes-empty" class="empty-state" style="display: flex;">
+                <h2>Every great quiz starts with one question.</h2>
+                <p>Create your first quiz now!</p>
+            </div>
+            
+            <!-- Pagination Controls -->
+            <div class="pagination-wrapper" id="my-quizzes-pagination" style="display: none;">
+                <div class="pagination-container">
+                    <button class="page-btn" aria-label="First Page"><svg viewBox="0 0 24 24"><path d="M17 18L11 12l6-6M7 6v12"/></svg></button>
+                    <button class="page-btn page-text-btn" aria-label="Previous Page"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg><span>Previous</span></button>
+                    <div class="page-indicator">
+                        <input type="number" class="page-input" value="1" min="1">
+                        <span class="page-total">of <span>1</span></span>
+                    </div>
+                    <button class="page-btn page-text-btn" aria-label="Next Page"><span>Next</span><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+                    <button class="page-btn" aria-label="Last Page"><svg viewBox="0 0 24 24"><path d="M7 18l6-6-6-6M17 6v12"/></svg></button>
+                </div>
+            </div>
+
+            <!-- The Grid Container -->
+            <div id="my-quizzes-grid" class="quiz-grid" style="display: none;"></div>
+
+        </section>
+
+    </main>
+        
+    <div class="modal-overlay" id="logoutModal">
+        <div class="logout-modal">
+            <h2 class="modal-title">Are you sure you want to<br>Log out?</h2>
+            <div class="modal-buttons">
+                <button class="modal-btn" id="confirmLogout">Yes</button>
+                <button class="modal-btn" id="cancelLogout">No</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../js/navbar.js"></script>
+    <script>
+        // --- LOGOUT MODAL LOGIC ---
+        const logoutTrigger = document.getElementById('logoutTrigger'); // Note: Make sure your navbar.js applies this ID to the logout button!
+        const logoutModal = document.getElementById('logoutModal');
+        const cancelLogout = document.getElementById('cancelLogout');
+        const confirmLogout = document.getElementById('confirmLogout');
+
+        // Note: Because the navbar is injected via JS, the logout trigger might not exist immediately. 
+        // We use event delegation on the document to catch the click safely.
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.logout-btn')) {
+                e.preventDefault(); 
+                logoutModal.style.display = 'flex';
+            }
+        });
+
+        // Hide the modal if 'No' is clicked
+        cancelLogout.addEventListener('click', () => {
+            logoutModal.style.display = 'none';
+        });
+
+        // Redirect to login page if 'Yes' is clicked
+        confirmLogout.addEventListener('click', () => {
+            window.location.href = 'login';
+        });
+
+        // --- TAB SWITCHING LOGIC ---
+        const tabCommunity = document.getElementById('tab-community');
+        const tabMyQuizzes = document.getElementById('tab-my-quizzes');
+        const contentCommunity = document.getElementById('content-community');
+        const contentMyQuizzes = document.getElementById('content-my-quizzes');
+
+        tabCommunity.addEventListener('click', () => {
+            // Move the active underline
+            tabCommunity.classList.add('active');
+            tabMyQuizzes.classList.remove('active');
+            
+            // Show Community, hide My Quizzes
+            // We use 'flex' because your .empty-state class relies on display: flex to center items
+            contentCommunity.style.display = 'flex'; 
+            contentMyQuizzes.style.display = 'none';
+        });
+
+        tabMyQuizzes.addEventListener('click', () => {
+            // Move the active underline
+            tabMyQuizzes.classList.add('active');
+            tabCommunity.classList.remove('active');
+            
+            // Show My Quizzes, hide Community
+            contentMyQuizzes.style.display = 'block'; 
+            contentCommunity.style.display = 'none';
+        });
+        // --- RENDER DASHBOARD CARDS (BACKEND INTEGRATION) ---
+        async function fetchAndRenderMyQuizzes() {
+            const emptyState = document.getElementById('my-quizzes-empty');
+            const gridContainer = document.getElementById('my-quizzes-grid');
+
+            try {
+                // 1. Fetch the user's quizzes from the database
+                const response = await fetch('/api/quizzes/my-quizzes');
+                const quizzes = await response.json();
+
+                // 2. Check if the user has any saved quizzes
+                if (quizzes.length > 0) {
+                    // Hide empty state, show grid
+                    emptyState.style.display = 'none';
+                    gridContainer.style.display = 'grid';
+                    gridContainer.innerHTML = ''; 
+
+                    // 3. STRICTLY LIMIT TO 8 CARDS (Prep for Pagination)
+                    const quizzesToDisplay = quizzes.slice(0, 8);
+
+                    // 4. Loop through the data and build the HTML cards
+                    quizzesToDisplay.forEach(quiz => {
+                        const cardHTML = `
+                            <div class="quiz-card">
+                                <!-- Placeholder image until backend handles file uploads -->
+                                <img src="https://via.placeholder.com/400x200/0B1519/00FFF6?text=QuizCraft" alt="Thumbnail" class="quiz-card-img">
+                                <div class="quiz-card-footer">
+                                    <div class="quiz-meta">
+                                        <h4>${quiz.title}</h4>
+                                        <p>${quiz.totalQuestions || 0} Questions</p>
+                                        <p>Creator: <span class="creator">${quiz.creator}</span></p>
+                                    </div>
+                                    <button class="btn-view">View Quiz</button>
+                                </div>
+                            </div>
+                        `;
+                        // Inject the card into the grid container
+                        gridContainer.insertAdjacentHTML('beforeend', cardHTML);
+                    });
+
+                } else {
+                    // Ensure empty state is visible if no quizzes are returned
+                    emptyState.style.display = 'flex';
+                    gridContainer.style.display = 'none';
+                }
+            } catch (error) {
+                console.error("Failed to load quizzes from backend:", error);
+            }
+        }
+
+        // Run the fetch function automatically when the dashboard loads
+        document.addEventListener('DOMContentLoaded', fetchAndRenderMyQuizzes);
+    </script>
+</body>
+</html>
