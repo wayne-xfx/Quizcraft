@@ -12,7 +12,7 @@ QuizCraft is a web-based quiz platform designed to help users create, manage, an
 
 ##  Tech Stack
 
-- **Frontend:** CSS
+- **Frontend:** HTML, CSS, JavaScript
 - **Backend:** Node.js
 - **Database:** MongoDB
 - **Authentication:** JWT Auth
