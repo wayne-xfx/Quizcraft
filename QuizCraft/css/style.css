@@ -309,6 +309,7 @@ body.dashboard-body {
     
     /* Adjust padding to keep the logo and buttons away from the extreme edges */
     padding: 1rem 4rem;
+    box-sizing: border-box;
 }
 
 .nav-left {
@@ -507,6 +508,121 @@ body.dashboard-body {
 /* Modifier to push the button down slightly */
 .mt-4 {
     margin-top: 1rem;
+}
+
+/* =========================================
+       --- CHOOSE QUIZ TYPE MODAL --- 
+========================================= */
+
+/* Triggers visibility via JavaScript */
+.modal-overlay.show {
+    display: flex !important; /* Overrides the display: none from your existing overlay */
+}
+
+/* The Modal Container */
+.modal-content {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    padding: 3rem;
+    border: 1px solid #00FFF6;
+    border-radius: 16px;
+    background: #0B1519; /* Dark teal background */
+}
+
+/* Back Button */
+.btn-back {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+/* Target the SVG directly to increase the visual size */
+.btn-back svg {
+    width: 36px;  /* Increase or decrease this to adjust the size */
+    height: 36px; /* Keep this exactly the same as the width */
+}
+
+.btn-back:hover {
+    transform: scale(1.1);
+}
+
+/* Modal Options Container */
+.modal-options {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+}
+
+/* --- Quiz Option Cards --- */
+.quiz-option-card {
+    background: rgba(0, 255, 246, 0.05);
+    border: 2px solid #00FFF6;
+    border-radius: 12px;
+    padding: 0; /* Removed padding so the SVG container can touch the edges */
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex: 1; /* Makes both cards equal width */
+    display: flex;
+    overflow: hidden; /* Prevents the SVG from spilling out of the rounded corners */
+}
+
+
+/* --- Icon Swap Logic for Cards --- */
+.option-icon {
+    position: relative;
+    width: 100%;
+    flex: 1;    
+    height: 240px; /* Increased significantly to give the card its new shape */
+    margin-bottom: 0; /* Removed margin since there is no text below it anymore */
+}
+
+.option-icon img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    
+    /* 'contain' scales the SVG as large as possible without cutting off any baked-in text */
+    object-fit: contain; 
+    
+    /* Adds a little breathing room inside the card. Change to 0 if you want it completely flush. */
+    padding: 0; 
+    object-fit: cover;
+    transition: opacity 0.2s ease;
+}
+/* Default State */
+.quiz-option-card .icon-normal { opacity: 1; }
+.quiz-option-card .icon-active { opacity: 0; }
+
+/* Active State */
+.quiz-option-card.active .icon-normal { opacity: 0; }
+.quiz-option-card.active .icon-active { opacity: 1; }
+
+/* Continue Button */
+.btn-continue {
+    background-color: #00FFF6;
+    color: #000000;
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 0.8rem 4rem;
+    border: 1px solid #00FFF6; 
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.4s ease, color 0.4s ease, box-shadow 0.2s ease;
+    box-shadow: 0 0 15px rgba(0, 255, 246, 0.4);
+}
+
+.btn-continue:hover {
+    background-color: #011e22;
+    color: #00FFF6;
+    box-shadow: 0 0 25px rgba(0, 255, 246, 0.6);
 }
 
 /* =========================================
@@ -773,18 +889,21 @@ input:checked + .slider:before {
 .btn-browse {
     background-color: #00FFF6;
     color: #000;
-    border: none;
-    padding: 0.4rem 1.2rem;
+    border: 1px solid transparent;
+    padding: 0.6rem 2rem;
     border-radius: 20px;
+    font-size: 0.95rem;
     font-weight: 600;
-    font-size: 0.85rem;
     cursor: pointer;
-    width: fit-content;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(0, 255, 246, 0.2);
 }
 
 .btn-browse:hover {
-    box-shadow: 0 0 10px rgba(0, 255, 246, 0.5);
+    background-color: #011e22; /* Dark teal background on hover */
+    color: #00FFF6;
+    border-color: #00FFF6;
+    box-shadow: 0 0 20px rgba(0, 255, 246, 0.6);
 }
 
 /* --- Privacy Sidebar --- */
@@ -812,6 +931,7 @@ input:checked + .slider:before {
     color: #fff;
 }
 
+
 /* --- Questions Section --- */
 .questions-header {
     display: flex;
@@ -828,19 +948,21 @@ input:checked + .slider:before {
 .btn-add-question {
     background-color: #00FFF6;
     color: #000;
-    border: none;
-    padding: 0.6rem 1.2rem;
+    border: 1px solid transparent;
+    padding: 0.6rem 2rem;
     border-radius: 6px;
-    font-weight: 600;
     font-size: 0.95rem;
-    display: flex;
-    align-items: center;
+    font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(0, 255, 246, 0.2);
 }
 
 .btn-add-question:hover {
-    box-shadow: 0 0 15px rgba(0, 255, 246, 0.4);
+    background-color: #011e22; /* Dark teal background on hover */
+    color: #00FFF6;
+    border-color: #00FFF6;
+    box-shadow: 0 0 20px rgba(0, 255, 246, 0.6);
 }
 
 .questions-empty-state {
@@ -867,6 +989,7 @@ input:checked + .slider:before {
 .form-actions {
     display: flex;
     justify-content: flex-end;
+    gap: 1.5rem;
 }
 
 .btn-cancel {
@@ -883,4 +1006,382 @@ input:checked + .slider:before {
 .btn-cancel:hover {
     background: rgba(0, 255, 246, 0.1);
     border-color: #00FFF6;
+}
+
+.btn-save {
+    background-color: #00FFF6;
+    color: #000;
+    border: 1px solid transparent;
+    padding: 0.6rem 2rem;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(0, 255, 246, 0.2);
+}
+
+.btn-save:hover {
+    background-color: #011e22; /* Dark teal background on hover */
+    color: #00FFF6;
+    border-color: #00FFF6;
+    box-shadow: 0 0 20px rgba(0, 255, 246, 0.6);
+}
+
+/* =========================================
+       --- QUESTION BLOCKS & MCQ GRID --- 
+========================================= */
+
+.question-block {
+    padding: 1.5rem 2rem;
+    border: 1px solid rgba(0, 255, 246, 0.3);
+    border-radius: 12px;
+}
+
+.question-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(0, 255, 246, 0.1);
+    padding-bottom: 1rem;
+}
+
+.question-number {
+    color: #00FFF6;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.btn-remove {
+    background-color: #00FFF6;
+    color: #000;
+    border: none;
+    padding: 0.4rem 1.2rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-remove:hover {
+    background-color: #ff4b4b; /* Alert red on hover */
+    color: #fff;
+    box-shadow: 0 0 10px rgba(255, 75, 75, 0.4);
+}
+
+/* --- Form Adjustments for Questions --- */
+.label-subtext {
+    color: rgba(0, 255, 246, 0.5);
+    font-size: 0.8rem;
+    font-weight: 400;
+    margin-left: 0.5rem;
+}
+
+.mt-1 { 
+    margin-top: 0.8rem; 
+}
+
+/* --- Multiple Choice Grid (2x2 Layout) --- */
+.mcq-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Forces 2 columns */
+    gap: 1.2rem 2rem; /* Up/down gap, left/right gap */
+    width: 100%;
+}
+
+.mcq-option {
+    display: flex;
+    align-items: center;
+    gap: 1rem; 
+    width: 100%;
+}
+
+/* Pill-shaped inputs specific to the MCQ grid */
+.mcq-option .custom-input {
+    flex: 1; 
+    border-radius: 25px; 
+    padding: 0.8rem 1.2rem; 
+}
+
+/* --- Custom Radio Buttons --- */
+.mcq-radio {
+    appearance: none; 
+    -webkit-appearance: none;
+    width: 24px;
+    height: 24px;
+    border: 2px solid rgba(0, 255, 246, 0.4);
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+    outline: none;
+    position: relative;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+}
+
+.mcq-radio:hover,
+.mcq-radio:checked {
+    border-color: #00FFF6;
+}
+
+/* The solid inner circle when clicked */
+.mcq-radio:checked::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 12px;
+    height: 12px;
+    background: #00FFF6;
+    border-radius: 50%;
+    box-shadow: 0 0 5px rgba(0, 255, 246, 0.5);
+}
+
+/* =========================================
+       --- QUESTIONS CONTAINER SCROLLBAR --- 
+========================================= */
+
+/* Applies ONLY when a question is added */
+#questions-container:not(:empty) {
+    /* Locks the container to a specific height immediately */
+    height: 34vh; 
+    
+    overflow-y: scroll;
+    padding-right: 1rem; 
+    scroll-behavior: smooth;
+    
+    /* Adds a sleek border to frame the scrolling area */
+    border-bottom: 1px solid rgba(0, 242, 254, 0.1); 
+    padding-bottom: 1rem;
+}
+
+/* --- Custom Webkit Scrollbar Styling --- */
+#questions-container::-webkit-scrollbar {
+    width: 8px; 
+}
+
+#questions-container::-webkit-scrollbar-track {
+    background: rgba(0, 255, 246, 0.05); 
+    border-radius: 10px;
+}
+
+#questions-container::-webkit-scrollbar-thumb {
+    background: rgba(0, 255, 246, 0.3); 
+    border-radius: 10px;
+    transition: background 0.3s ease;
+}
+
+#questions-container::-webkit-scrollbar-thumb:hover {
+    background: #00FFF6; 
+}
+
+/* =========================================
+       --- CANCEL CONFIRMATION MODAL --- 
+========================================= */
+
+.cancel-modal {
+    background: #0B1519; /* Dark teal background */
+    border: 1px solid #00FFF6;
+    border-radius: 12px;
+    padding: 3rem 4rem;
+    text-align: center;
+    max-width: 450px;
+}
+
+.cancel-modal-title {
+    color: #00FFF6;
+    font-size: 1.8rem;
+    font-weight: 400;
+    line-height: 1.4;
+    margin-bottom: 2.5rem;
+}
+
+/* --- DASHBOARD QUIZ GRID LAYOUT --- */
+.quiz-grid {
+    display: grid;
+    /* This is the magic line that forces exactly 4 equal columns */
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 1.5rem; /* The spacing between the cards */
+    width: 100%;
+    margin-top: 1.5rem;
+}
+
+/* BEST PRACTICE: Add these responsive breakpoints so the grid doesn't break on smaller laptops or tablets */
+@media (max-width: 1200px) {
+    .quiz-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .quiz-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* --- QUIZ CARD --- */
+.quiz-card {
+    background-color: #162125; 
+    border: 2px solid #00FFF6; 
+    border-radius: 16px; 
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 0 8px rgba(0, 255, 246, 0.15); 
+}
+
+.quiz-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 255, 246, 0.3);
+}
+
+.quiz-card-img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-bottom: none; 
+}
+
+.quiz-card-footer {
+    padding: 1.2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.quiz-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem; 
+}
+
+.quiz-meta h4 {
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0 0 0.2rem 0;
+}
+
+.quiz-meta p {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.75rem;
+    margin: 0;
+    line-height: 1.1; 
+}
+
+.quiz-meta .creator {
+    color: #00FFF6;
+}
+
+/* --- WIDER PILL BUTTON --- */
+.btn-view {
+    background-color: #00FFF6;
+    color: #000;
+    border: none;
+    padding: 0.6rem 1.5rem; /* Wider padding for the pill effect */
+    border-radius: 25px; /* Fully rounded edges */
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-view:hover {
+    box-shadow: 0 0 12px rgba(0, 255, 246, 0.6);
+}
+
+/* =========================================
+       --- PAGINATION --- 
+========================================= */
+
+.pagination-wrapper {
+    display: flex;
+    justify-content: flex-end; /* Aligns to the right */
+    padding-top: 1.5rem;       /* Space below the separator */
+    margin-bottom: -0.5rem;    /* Pulls the grid slightly closer */
+    width: 100%;
+}
+
+.pagination-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(15, 20, 24, 0.6);
+    padding: 0.4rem 1rem;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 255, 246, 0.15);
+}
+
+.page-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    padding: 0.3rem;
+}
+
+.page-btn:hover:not(:disabled) {
+    color: #00FFF6;
+}
+
+.page-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.page-btn svg {
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.page-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin: 0 0.5rem;
+}
+
+.page-input {
+    background: #0B1519;
+    border: 1px solid rgba(0, 255, 246, 0.4);
+    color: #fff;
+    border-radius: 4px;
+    width: 40px;
+    text-align: center;
+    padding: 0.2rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    /* Hide default spin arrows */
+    -moz-appearance: textfield;
+    appearance: textfield; 
+}
+
+.page-input::-webkit-outer-spin-button,
+.page-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.page-input:focus {
+    border-color: #00FFF6;
+    box-shadow: 0 0 8px rgba(0, 255, 246, 0.2);
 }
