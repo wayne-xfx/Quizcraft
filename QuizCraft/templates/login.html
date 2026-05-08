@@ -28,7 +28,6 @@
                 
                 <form id="loginForm" class="login-form"> 
                     
-                    <!-- 1. Changed this from Email to Username to match the backend database -->
                     <div class="input-group">
                         <label for="username" class="sr-only">Username</label>
                         <img src="../assets/icons/user.svg" alt="" aria-hidden="true" class="input-icon">                        
@@ -41,7 +40,10 @@
                         <input type="password" id="password" name="password" placeholder="Password" required>
                     </div>
 
-                    <!-- 2. Added the message div for errors/success text -->
+                    <div style="text-align: right; margin-top: -10px; margin-bottom: 20px;">
+                        <a href="forgot-password.html" style="color: #09FFF3; font-size: 0.85rem; text-decoration: none; font-weight: 500;">Forgot Password?</a>
+                    </div>
+
                     <div id="message" style="text-align: center; color: #d9534f; margin-bottom: 15px; font-weight: 500;"></div>
 
                     <button type="submit" class="btn-primary">Log In</button>
@@ -56,7 +58,6 @@
 
     </main>
 
-    <!-- 3. Connected the Javascript file and told it to use the "login" logic -->
     <script src="../js/auth.js"></script>
     <script>
         document.getElementById('loginForm').addEventListener('submit', (e) => handleAuth(e, 'login'));

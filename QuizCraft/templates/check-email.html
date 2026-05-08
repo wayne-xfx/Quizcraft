@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Your Email - QuizCraft</title>
+    <link rel="stylesheet" href="../css/passreset.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="pageContainer">
+        <div class="resetCard">
+            
+            <div class="emailIconWrapper">
+                <svg class="emailIcon" viewBox="0 0 64 64" fill="none" stroke="#00e5ff" stroke-width="1.5">
+                    <circle cx="32" cy="32" r="30"></circle>
+                    <rect x="16" y="22" width="32" height="20" rx="1"></rect>
+                    <path d="M16 22l16 11 16-11"></path>
+                </svg>
+            </div>
+
+            <h1 class="title">Check Your Email</h1>
+
+            <div class="messageContainer">
+                <p class="messageText">We’ve sent a password reset link to</p>
+                <p class="userEmailHighlight" id="displayEmail">someone@gmail.com</p>
+                <p class="messageText expirationText">The link will expire in 15 minutes.</p>
+            </div>
+
+            <button id="resendBtn" class="primaryBtn">Resend Link</button>
+
+            <div id="resendStatus" class="statusMessage"></div>
+        
+            <div class="footerLink">
+                Remember your password? <a href="login.html" class="highlightLink">Log In</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/check-email.js"></script>
+</body>
+</html>
