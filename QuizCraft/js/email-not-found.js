@@ -21,12 +21,25 @@ retryForm.addEventListener('submit', function(e) {
     statusMessage.textContent = 'Sending...';
     statusMessage.className = 'statusMessage successText';
 
+    /*
+     * =========================================================
+     * BACKEND NOTE: Retry Email API
+     * 1. Remove this mock setTimeout.
+     * 2. Implement a fetch() POST request to your auth endpoint.
+     * 3. The backend should check if the email exists.
+     * 4. On SUCCESS (200): Save userEmail to localStorage and 
+     * redirect to '/check-email'.
+     * 5. On FAILURE (404): Re-enable the button/input and 
+     * show an error in the statusMessage.
+     * =========================================================
+     */
+
     // 3. Mock API Call Delay
     setTimeout(() => {
         // Save the email to local storage so the next page can display it
         localStorage.setItem('resetEmail', userEmail);
         
-        // Redirect to the Check Email page
-        window.location.href = 'check-email.html';
+        // Redirect to the Check Email page using the clean Express route
+        window.location.href = '/check-email';
     }, 1500); 
 });

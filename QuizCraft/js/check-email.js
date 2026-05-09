@@ -29,7 +29,19 @@ resendBtn.addEventListener('click', () => {
     resendStatus.className = 'statusMessage successText';
     resendBtn.disabled = true; // Lock immediately
 
-    // BACKEND DEV: Replace this setTimeout with your actual API fetch
+    /*
+     * =========================================================
+     * BACKEND NOTE: Resend Link API Call
+     * 1. Remove this setTimeout mock.
+     * 2. Implement a fetch() POST request to your endpoint 
+     * (e.g., /api/forgot-password).
+     * 3. Grab the 'savedEmail' variable (from localStorage above) 
+     * and pass it in the JSON body of the request.
+     * 4. Await the response. If successful, trigger startCooldown() 
+     * and show the success message. If it fails, display the 
+     * error in 'resendStatus'.
+     * =========================================================
+     */
     setTimeout(() => {
         // Success state
         resendStatus.textContent = 'A new link has been sent to your inbox!';

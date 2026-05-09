@@ -66,9 +66,9 @@ form.addEventListener('submit', function(e) {
 
     // --- CHECK 2: Are all requirements met? ---
     const isValid = pass1.length >= 8 && 
-                   /[a-z]/.test(pass1) && 
-                   /[A-Z]/.test(pass1) && 
-                   /\d/.test(pass1);
+                    /[a-z]/.test(pass1) && 
+                    /[A-Z]/.test(pass1) && 
+                    /\d/.test(pass1);
 
     if (!isValid) {
         statusMessage.textContent = 'Please meet all password requirements.';
@@ -76,8 +76,7 @@ form.addEventListener('submit', function(e) {
         return;
     }
 
-    /* 
-    ====================================================================
+    /* ====================================================================
     BACKEND DEVELOPER CHECKLIST & WORKSPACE:
     
     1. EXTRACT TOKEN: 
@@ -85,7 +84,7 @@ form.addEventListener('submit', function(e) {
        Example: const urlParams = new URLSearchParams(window.location.search);
                 const token = urlParams.get('token');
                 
-       (If token is missing/invalid, instantly redirect them to login with an error).
+       (If token is missing/invalid, instantly redirect them to /login with an error).
 
     2. IDENTIFY USER:
        Retrieve the email from localStorage (used in front-end prototyping) OR 
@@ -97,7 +96,7 @@ form.addEventListener('submit', function(e) {
        Payload should include: { token: token, newPassword: pass1 }
 
     4. HANDLE RESPONSE:
-       - SUCCESS: Clear localStorage, redirect to reset-success.html.
+       - SUCCESS: Clear localStorage, redirect to /reset-success
        - ERROR (Token Expired/Invalid): Show error, ask user to request a new link.
     ====================================================================
     */
@@ -109,7 +108,7 @@ form.addEventListener('submit', function(e) {
         // Clean up the mock data
         localStorage.removeItem('resetEmail');
 
-        // Immediately redirect to success page
-        window.location.href = 'reset-success.html';
+        // Immediately redirect to success page using the clean Express route
+        window.location.href = '/reset-success';
     }, 1500);
 });

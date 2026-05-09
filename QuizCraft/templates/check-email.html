@@ -21,6 +21,20 @@
 
             <h1 class="title">Check Your Email</h1>
 
+            <div style="display: none;" class="backend-note">
+            =========================================================
+            BACKEND NOTE: Dynamic Data & Resend Logic
+            1. Email Injection: The 'displayEmail' paragraph below 
+               should be dynamically populated with the email the user 
+               just entered (either via server-side rendering like EJS 
+               or fetched by the frontend via session/local storage).
+            2. Resend Action: The 'resendBtn' needs an event listener 
+               in 'check-email.js' that triggers a POST request to your 
+               API (e.g., /api/forgot-password) to generate and send a 
+               new token without making the user re-type their email.
+            ========================================================= 
+            </div>
+
             <div class="messageContainer">
                 <p class="messageText">We’ve sent a password reset link to</p>
                 <p class="userEmailHighlight" id="displayEmail">someone@gmail.com</p>
@@ -32,7 +46,7 @@
             <div id="resendStatus" class="statusMessage"></div>
         
             <div class="footerLink">
-                Remember your password? <a href="login.html" class="highlightLink">Log In</a>
+                Remember your password? <a href="/login" class="highlightLink">Log In</a>
             </div>
         </div>
     </div>

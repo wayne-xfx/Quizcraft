@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    
     const tableBody = document.getElementById('quiz-table-body');
     const paginationContainer = document.getElementById('auto-pagination');
     
@@ -95,6 +96,16 @@ document.addEventListener('DOMContentLoaded', () => {
     /**
      * GLOBAL ACTION HANDLER (Event Delegation)
      * Handles clicks for Delete, Edit, and View buttons regardless of which page they are on.
+     * * =========================================================
+     * BACKEND NOTE: API Integration for Quiz Actions
+     * 1. DELETE: Instead of just row.remove(), send a DELETE 
+     * request to /api/quizzes/:id. Only remove the row from 
+     * the UI if the server returns a 200 OK.
+     * 2. EDIT: Use the clean route /edit-quiz/:id to navigate 
+     * to the editor.
+     * 3. VIEW: Fetch the specific quiz data to populate a 
+     * preview modal or redirect to /quiz/:id.
+     * =========================================================
      */
     tableBody.addEventListener('click', function(e) {
         // Find if a button was clicked
@@ -127,13 +138,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // VIEW ACTION
         if (target.classList.contains('view-btn')) {
             alert(`Opening preview for: ${quizTitle}`);
-            // Logic for opening a preview modal or navigating to a detail page goes here
         }
 
         // EDIT ACTION
         if (target.classList.contains('edit-btn')) {
             console.log(`Navigating to editor for quiz: ${quizTitle}`);
-            // window.location.href = `edit-quiz.html?id=${row.dataset.id}`;
+            // Updated to clean route for Express
+            // window.location.href = `/edit-quiz?id=${row.dataset.id}`;
         }
     });
 

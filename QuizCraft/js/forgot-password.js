@@ -1,4 +1,4 @@
-// DOM Elements
+// DOM Elements cached at the top for performance
 const resetForm = document.getElementById('resetForm');
 const emailInput = document.getElementById('emailInput');
 const submitBtn = document.getElementById('submitBtn');
@@ -27,11 +27,26 @@ function handleFormSubmit(event) {
 }
 
 function executeMockBackendLogic(emailData) {
+    /* ====================================================================
+    BACKEND NOTE: Forgot Password Verification Logic
+    1. Replace this mock function with a real fetch() POST request to 
+       your API (e.g., /api/auth/forgot-password).
+    2. Backend verifies if the email exists in the database.
+    3. If Email NOT Found: Respond with a specific error so the JS 
+       can redirect to '/email-not-found'.
+    4. If Email Found: 
+       - Generate a secure reset token.
+       - Send the email via your mailing service (NodeMailer, etc.).
+       - Respond with success so the JS can redirect to '/check-email'.
+    ====================================================================
+    */
+
     // --- PROTOTYPE TRIGGER ---
     // If you type this exact email, it tests the "Not Found" page
     if (emailData === 'fail@test.com') {
         setTimeout(() => {
-            window.location.href = 'email-not-found.html';
+            // Updated to clean route
+            window.location.href = '/email-not-found';
         }, 1000);
         return; // Stops here!
     }
@@ -41,7 +56,8 @@ function executeMockBackendLogic(emailData) {
     displayMessage('Sending...', 'successText');
     
     setTimeout(() => {
-        window.location.href = 'check-email.html';
+        // Updated to clean route
+        window.location.href = '/check-email';
     }, 1000); 
 }
 

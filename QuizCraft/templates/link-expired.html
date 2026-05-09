@@ -21,10 +21,22 @@
                 This password reset link has expired. Please<br>request a new one to continue.
             </p>
 
-            <a href="forgot-password.html" class="primaryBtn">Request New Link</a>
+            <div style="display: none;" class="backend-note">
+            =========================================================
+            BACKEND NOTE: Token Expiration Routing
+            1. When the user clicks the email link to reset their 
+               password (e.g., /reset-password?token=xyz), the backend 
+               must verify the token in the database.
+            2. If the token is past its expiration time (e.g., > 15 mins) 
+               or has already been used, the Express server should 
+               automatically redirect the user to this /link-expired route.
+            ========================================================= 
+            </div>
+
+            <a href="/forgot-password" class="primaryBtn">Request New Link</a>
 
             <div class="footerLink" style="margin-top: 25px;">
-                <a href="login.html" class="highlightLink">Back to Login</a>
+                <a href="/login" class="highlightLink">Back to Login</a>
             </div>
 
         </div>

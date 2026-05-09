@@ -21,6 +21,21 @@
                 We couldn't find an account with that email address.<br>Please check and try again.
             </p>
 
+            <div style="display: none;" class="backend-note">
+            =========================================================
+            BACKEND NOTE: Email Verification API
+            1. On form submit, send a POST request to the API 
+               (e.g., /api/forgot-password) with the 'emailInput' value.
+            2. The backend should query the database to check if the 
+               user exists.
+            3. If found: Generate a reset token, send the email, and 
+               respond with a success status so the frontend JS can 
+               redirect the user to the /check-email route.
+            4. If NOT found: Return an error status so the frontend JS 
+               can display a message in the 'retryStatusMessage' div.
+            ========================================================= 
+            </div>
+
             <form id="retryEmailForm">
                 
                 <div class="inputGroup">
@@ -39,7 +54,7 @@
             </form>
 
             <div class="footerLink" style="margin-top: 25px;">
-                <a href="login.html" class="highlightLink">Back to Login</a>
+                <a href="/login" class="highlightLink">Back to Login</a>
             </div>
 
         </div>
