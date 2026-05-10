@@ -22,7 +22,19 @@ async function handleAuth(event, type) {
             if (type === 'login') {
                 localStorage.setItem('token', data.token);
                 messageElement.innerText = "Login Successful! Redirecting...";
-                setTimeout(() => window.location.href = '/dashboard', 2000);
+                
+                // --- NEW ROLE-BASED REDIRECT ---
+                setTimeout(() => {
+                    // Check if the backend says this user is an admin
+                    if (data.role === 'admin') {
+                        window.location.href = 'admin-dashboard.html';
+                    } else {
+                        // Regular user redirect (adjust to '/dashboard' if your backend handles the routing)
+                        window.location.href = 'dashboard.html'; 
+                    }
+                }, 2000);
+                // ------------------------------
+                
             } else {
                 messageElement.innerText = "Registration Successful! Please log in.";
             }
