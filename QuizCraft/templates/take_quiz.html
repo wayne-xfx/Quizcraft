@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Take Quiz - QuizCraft</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-body">
+
+    <div id="navbar-container"></div>
+
+    <main class="dashboard-main-full">
+        
+        <div class="quiz-take-fullscreen">
+            
+            <header class="qt-header">
+                <div class="qt-header-left">
+                    <button class="btn-back-icon" id="btn-exit" aria-label="Exit Quiz">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#00FFF6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 28px; height: 28px;">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 8 8 12 12 16"></polyline>
+                        </svg>
+                    </button>
+                    <h1 id="qt-title">Quiz Title Placeholder</h1>
+                </div>
+                <div class="qt-header-right">
+                    <p>Creator: <span class="highlight" id="qt-creator">Username</span></p>
+                </div>
+            </header>
+
+            <hr class="qt-divider">
+
+            <div class="qt-content-area">
+                <h2 id="qt-question-text">Loading question...</h2>
+                <p class="qt-subtext" id="qt-subtext">Loading format...</p>
+
+                <div id="qt-dynamic-input-area">
+                    </div>
+            </div>
+
+            <hr class="qt-divider">
+            
+            <footer class="qt-footer-full">
+                <div class="qt-footer-left"></div>
+                
+                <div class="qt-progress-wrapper-full">
+                    <div class="qt-progress-bar-bg">
+                        <div class="qt-progress-bar-fill" id="qt-progress-fill"></div>
+                    </div>
+                    <span class="qt-progress-text" id="qt-progress-text">0 / 0</span>
+                </div>
+                
+                <div class="qt-footer-right">
+                    <button class="btn-secondary" id="btn-prev">Previous</button>
+                    <button class="btn-primary" id="btn-next">Next</button>
+                </div>
+            </footer>
+
+        </div>
+    </main>
+
+    <script src="../js/navbar.js"></script>
+    
+    <script src="../js/take_quiz.js"></script>
+</body>
+</html>
