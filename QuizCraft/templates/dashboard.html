@@ -21,22 +21,18 @@
             </div>
         </header>
 
-        <!-- Community Quizzes Content (Visible by default) -->
         <section id="content-community" class="empty-state" style="display: none;">
             <h2>Explore the IT Trivia Community Quizzes.</h2>
             <p>Discover and play quizzes from different fields!</p>
         </section>
 
-        <!-- My Quizzes Content -->
         <section id="content-my-quizzes" style="display: none; width: 100%;">
             
-            <!-- Empty State Container -->
             <div id="my-quizzes-empty" class="empty-state" style="display: flex;">
                 <h2>Every great quiz starts with one question.</h2>
                 <p>Create your first quiz now!</p>
             </div>
             
-            <!-- Pagination Controls -->
             <div class="pagination-wrapper" id="my-quizzes-pagination" style="display: none;">
                 <div class="pagination-container">
                     <button class="page-btn" aria-label="First Page"><svg viewBox="0 0 24 24"><path d="M17 18L11 12l6-6M7 6v12"/></svg></button>
@@ -50,14 +46,13 @@
                 </div>
             </div>
 
-            <!-- The Grid Container -->
             <div id="my-quizzes-grid" class="quiz-grid" style="display: none;"></div>
 
         </section>
 
     </main>
         
-    <div class="modal-overlay" id="logoutModal">
+    <div class="modal-overlay" id="logoutModal" style="display: none;">
         <div class="logout-modal">
             <h2 class="modal-title">Are you sure you want to<br>Log out?</h2>
             <div class="modal-buttons">
@@ -67,7 +62,6 @@
         </div>
     </div>
 
-    <!-- View Quiz Modal Overlay -->
     <div class="modal-overlay" id="viewQuizModal" style="display: none;">
         <div class="view-quiz-modal">
             
@@ -77,10 +71,8 @@
                 </svg>
             </button>
 
-            <!-- Top Image (Using a local asset, but should be replaced with dynamic content) -->
             <img src="../assets/background.svg" alt="Quiz Cover" class="view-quiz-img" id="modal-img">
 
-            <!-- Bottom Content -->
             <div class="view-quiz-content">
                 <div class="vq-header">
                     <h2 id="modal-title">Quiz Title</h2>
@@ -109,152 +101,6 @@
     </div>
     
     <script src="../js/navbar.js"></script>
-    <script>
-        // --- LOGOUT MODAL LOGIC ---
-        const logoutTrigger = document.getElementById('logoutTrigger'); 
-        const logoutModal = document.getElementById('logoutModal');
-        const cancelLogout = document.getElementById('cancelLogout');
-        const confirmLogout = document.getElementById('confirmLogout');
-
-        document.addEventListener('click', (e) => {
-            if (e.target.closest('.logout-btn')) {
-                e.preventDefault(); 
-                logoutModal.style.display = 'flex';
-            }
-        });
-
-        cancelLogout.addEventListener('click', () => {
-            logoutModal.style.display = 'none';
-        });
-
-        confirmLogout.addEventListener('click', () => {
-            window.location.href = 'login';
-        });
-
-        // --- TAB SWITCHING LOGIC ---
-        const tabCommunity = document.getElementById('tab-community');
-        const tabMyQuizzes = document.getElementById('tab-my-quizzes');
-        const contentCommunity = document.getElementById('content-community');
-        const contentMyQuizzes = document.getElementById('content-my-quizzes');
-
-        tabCommunity.addEventListener('click', () => {
-            tabCommunity.classList.add('active');
-            tabMyQuizzes.classList.remove('active');
-            
-            contentCommunity.style.display = 'flex'; 
-            contentMyQuizzes.style.display = 'none';
-        });
-
-        tabMyQuizzes.addEventListener('click', () => {
-            tabMyQuizzes.classList.add('active');
-            tabCommunity.classList.remove('active');
-            
-            contentMyQuizzes.style.display = 'block'; 
-            contentCommunity.style.display = 'none';
-        });
-
-        // --- RENDER DASHBOARD CARDS (BACKEND INTEGRATION) ---
-        async function fetchAndRenderMyQuizzes() {
-            const emptyState = document.getElementById('my-quizzes-empty');
-            const gridContainer = document.getElementById('my-quizzes-grid');
-            // Assuming your backend dev will toggle pagination visibility when they hook it up
-            const paginationControls = document.getElementById('my-quizzes-pagination');
-
-            try {
-                // 1. Fetch the user's quizzes from the database
-                const response = await fetch('/api/quizzes/my-quizzes');
-                const quizzes = await response.json();
-
-                // 2. Check if the user has any saved quizzes
-                if (quizzes.length > 0) {
-                    emptyState.style.display = 'none';
-                    gridContainer.style.display = 'grid';
-                    gridContainer.innerHTML = ''; 
-                    
-                    // Show pagination controls if needed later (hidden by default initially)
-                    // paginationControls.style.display = 'flex';
-
-                    // 3. STRICTLY LIMIT TO 8 CARDS (Prep for Pagination)
-                    const quizzesToDisplay = quizzes.slice(0, 8);
-
-                    // 4. Loop through the data and build the HTML cards
-                    quizzesToDisplay.forEach(quiz => {
-                        // Includes local fallback image and `<p>` tag for type matching the test file
-                        const cardHTML = `
-                            <div class="quiz-card">
-                                <img src="../assets/background.svg" alt="Quiz Thumbnail" class="quiz-card-img">
-                                <div class="quiz-card-footer">
-                                    <div class="quiz-meta">
-                                        <h4>${quiz.title}</h4>
-                                        <p>${quiz.totalQuestions || 0} Questions</p>
-                                        <p>Creator: <span class="creator">${quiz.creator}</span></p>
-                                        <p>Type: <span class="quiz-type">${quiz.type || 'Unknown'}</span></p>
-                                    </div>
-                                    <button class="btn-view">View Quiz</button>
-                                </div>
-                            </div>
-                        `;
-                        gridContainer.insertAdjacentHTML('beforeend', cardHTML);
-                    });
-
-                } else {
-                    emptyState.style.display = 'flex';
-                    gridContainer.style.display = 'none';
-                    if(paginationControls) paginationControls.style.display = 'none';
-                }
-            } catch (error) {
-                console.error("Failed to load quizzes from backend:", error);
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', fetchAndRenderMyQuizzes);
-
-        // --- VIEW QUIZ MODAL LOGIC ---
-        const viewQuizModal = document.getElementById('viewQuizModal');
-        const closeViewQuizBtn = document.getElementById('closeViewQuizBtn');
-
-        if(closeViewQuizBtn) {
-            closeViewQuizBtn.addEventListener('click', () => {
-                viewQuizModal.style.display = 'none';
-            });
-        }
-
-        if(viewQuizModal) {
-            viewQuizModal.addEventListener('click', (e) => {
-                if (e.target === viewQuizModal) {
-                    viewQuizModal.style.display = 'none';
-                }
-            });
-        }
-
-        // Global click listener to catch dynamically rendered "View Quiz" buttons
-        document.addEventListener('click', (e) => {
-            if (e.target.classList.contains('btn-view')) {
-                const card = e.target.closest('.quiz-card');
-                
-                // Extract data directly from the HTML elements inside the card
-                const title = card.querySelector('h4').textContent;
-                const questionsText = card.querySelector('.quiz-meta p:nth-child(2)').textContent;
-                const creator = card.querySelector('.creator').textContent;
-                
-                // Check if quiz-type exists to prevent errors in case database does not have quiz type
-                const typeEl = card.querySelector('.quiz-type');
-                const quizType = typeEl ? typeEl.textContent : 'Unknown';
-                
-                const imgSrc = card.querySelector('img').src;
-                
-                const questionCount = questionsText.split(' ')[0];
-
-                // Inject data into the modal
-                document.getElementById('modal-title').textContent = title;
-                document.getElementById('modal-creator').textContent = creator;
-                document.getElementById('modal-questions').textContent = questionCount;
-                document.getElementById('modal-type').textContent = quizType;
-                document.getElementById('modal-img').src = imgSrc;
-                
-                viewQuizModal.style.display = 'flex';
-            }
-        });
-    </script>
+    <script src="../js/dashboard.js"></script>
 </body>
 </html>
