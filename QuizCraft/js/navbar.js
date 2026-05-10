@@ -1,4 +1,5 @@
 // --- 1. NAVBAR TEMPLATE ---
+// ⚠️ BACKEND REMINDER: Replace the static "Karl Dave" and email with dynamically fetched user session data.
 const navbarTemplate = `
     <nav class="top-navbar glass-panel">
         <div class="nav-left">
@@ -16,7 +17,7 @@ const navbarTemplate = `
                 <span class="email">karldave@example.com</span>
             </div>
             
-            <a href="login.html" class="logout-btn">
+            <a href="login" class="logout-btn">
                 <img src="../assets/icons/logout_button.svg" alt="Logout" class="logout-icon">
             </a>
         </div>
@@ -24,8 +25,9 @@ const navbarTemplate = `
 `;
 
 // --- 2. MODAL TEMPLATE ---
+// FIX 1: Added style="display: none;" to physically hide it on initial load
 const modalTemplate = `
-    <div id="quizTypeModal" class="modal-overlay">
+    <div id="quizTypeModal" class="modal-overlay" style="display: none;">
         <div class="modal-content glass-panel">
             
             <button class="btn-back" id="closeModalBtn" aria-label="Go back">
@@ -37,7 +39,6 @@ const modalTemplate = `
             </button>
 
             <div class="modal-options mt-4">
-                <!-- Multiple Choice Card -->
                 <div class="quiz-option-card" data-type="mcq">
                     <div class="option-icon">
                         <img src="../assets/icons/mcq_normal.svg" class="icon-normal">
@@ -45,12 +46,11 @@ const modalTemplate = `
                     </div>
                 </div>
 
-                <!-- Identification Card -->
                 <div class="quiz-option-card" data-type="id">
                     <div class="option-icon">
                         <img src="../assets/icons/id_normal.svg" class="icon-normal">
                         <img src="../assets/icons/id_active.svg" class="icon-active">
-                    </div>
+                    </div>  
                 </div>
             </div>
 
@@ -63,12 +63,10 @@ const modalTemplate = `
 `;
 
 // --- 3. INJECT INTO DOM ---
-// This adds both the navbar and the hidden modal to your page
 document.getElementById('navbar-container').innerHTML = navbarTemplate + modalTemplate;
 
 
 // --- 4. MODAL LOGIC ---
-// Wait for the DOM to fully load the injected HTML
 setTimeout(() => {
     const openModalBtn = document.getElementById('openQuizModalBtn');
     const closeModalBtn = document.getElementById('closeModalBtn');
@@ -78,20 +76,29 @@ setTimeout(() => {
 
     let selectedQuizType = null;
 
-    // Open Modal
+    // Open Modal (FIX 2: Use direct style overrides instead of class toggling)
     if (openModalBtn) {
         openModalBtn.addEventListener('click', () => {
-            modal.classList.add('show');
+            modal.style.display = 'flex';
         });
     }
 
-    // Close Modal
+    // Close Modal 
     if (closeModalBtn) {
         closeModalBtn.addEventListener('click', () => {
-            modal.classList.remove('show');
+            modal.style.display = 'none';
             // Optional: reset selection when closed
             optionCards.forEach(c => c.classList.remove('active'));
             selectedQuizType = null;
+        });
+    }
+
+    // Close when clicking outside the modal box
+    if (modal) {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
         });
     }
 
@@ -112,14 +119,13 @@ setTimeout(() => {
     // Handle Continue Button Redirect
     if (continueBtn) {
         continueBtn.addEventListener('click', () => {
-            if (selectedQuizType === 'mcq') {
-                window.location.href = 'create_quiz_mcq.html'; // Redirects to MCQ template
-            } else if (selectedQuizType === 'id') {
-                window.location.href = 'create_quiz_id.html';  // Redirects to ID template
+            // Check if a type was actually selected
+            if (selectedQuizType) {
+                // Send them to the unified page and pass the type in the URL
+                window.location.href = `create_quiz?type=${selectedQuizType}`; 
             } else {
-                // If they click continue without selecting a card
                 alert('Please select a quiz type first!');
             }
         });
     }
-}, 100); // Slight delay to ensure DOM injection is finished
+}, 100);
