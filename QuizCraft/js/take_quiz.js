@@ -56,6 +56,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnNext = document.getElementById('btn-next');
     const btnPrev = document.getElementById('btn-prev');
     const btnExit = document.getElementById('btn-exit');
+    const exitModalOverlay = document.getElementById('exit-modal-overlay');
+    const btnConfirmExit = document.getElementById('btn-confirm-exit');
+    const btnCloseExit = document.getElementById('btn-close-exit');
 
     // Set Initial Title
     quizTitle.textContent = quizType === 'id' ? "Identification Test" : "Multiple Choice Test";
@@ -173,12 +176,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // EXIT BUTTON
+
+    // EXIT BUTTON MODAL   
+    // 1. Open the modal when the back arrow is clicked
     btnExit.addEventListener('click', () => {
-        if(confirm("Are you sure you want to leave? Your progress will be lost.")) {
-            window.location.href = 'dashboard.html';
-        }
+        exitModalOverlay.style.display = 'flex';
     });
+
+    // 2. Close the modal when "No" is clicked
+    if (btnCloseExit) {
+        btnCloseExit.addEventListener('click', () => {
+            exitModalOverlay.style.display = 'none';
+        });
+    }
+
+    // 3. Leave the quiz when "Yes" is clicked
+    if (btnConfirmExit) {
+        btnConfirmExit.addEventListener('click', () => {
+            window.location.href = 'dashboard.html';
+        });
+    }
 
     // -------------------------------------------------------------
     // SUBMISSION LOGIC
