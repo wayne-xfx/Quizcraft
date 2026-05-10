@@ -151,18 +151,39 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // -------------------------------------------------------------
-    // 5. SAVE QUIZ LOGIC
+    // 5. SAVE QUIZ LOGIC 
     // -------------------------------------------------------------
     const btnSave = document.getElementById('btn-save-quiz');
+    const saveModalOverlay = document.getElementById('save-modal-overlay');
+    const btnConfirmSave = document.getElementById('btn-confirm-save');
+    const btnCloseSave = document.getElementById('btn-close-save');
 
-    if (btnSave) {
-        btnSave.addEventListener('click', async () => {
+    if (btnSave && saveModalOverlay) {
+        
+        // 1. Open the modal when "Save Quiz" is clicked
+        btnSave.addEventListener('click', () => {
+            // Optional: You could add a check here to ensure they added at least 1 question before opening the modal!
+            saveModalOverlay.style.display = 'flex';
+        });
+
+        // 2. Close the modal when "No" is clicked
+        btnCloseSave.addEventListener('click', () => {
+            saveModalOverlay.style.display = 'none';
+        });
+
+        // 3. Actually save the quiz when "Yes" is clicked
+        btnConfirmSave.addEventListener('click', async () => {
+            
+            // Hide the modal immediately
+            saveModalOverlay.style.display = 'none';
+            btnSave.textContent = "Saving...";
+
+            // Secure the inputs using the escapeHTML function we added earlier
             const titleInput = document.getElementById('quiz-title').value;
-            const quizTitle = titleInput.trim() !== '' ? titleInput : 'Untitled Quiz';
+            const quizTitle = titleInput.trim() !== '' ? escapeHTML(titleInput) : 'Untitled Quiz';
             const descInput = document.getElementById('quiz-description').value;
-            const quizDesc = descInput.trim(); 
+            const quizDesc = escapeHTML(descInput.trim()); 
 
-            // Sets the correct string for the backend database
             const typeString = quizType === 'id' ? 'Identification' : 'Multiple Choice';
 
             const quizPayload = {
@@ -173,12 +194,10 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             // MOCK SUBMISSION LOGIC 
-            // Swap this back to your fetch() logic when connecting the backend
             console.log("Submitting Payload:", quizPayload);
-            btnSave.textContent = "Saving...";
             
             setTimeout(() => {
-                window.location.href = 'dashboard.html'; // Adjust to your actual dashboard route
+                window.location.href = 'dashboard.html'; 
             }, 1000);
         });
     }
