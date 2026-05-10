@@ -61,7 +61,8 @@ body {
     display: inline-block;
     width: 32px; 
     height: 32px;
-    background-image: url('../assets/icons/back button default.svg'); 
+    /* FIXED: Replaced spaces with underscores */
+    background-image: url('../assets/icons/back_button_default.svg'); 
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -69,7 +70,8 @@ body {
 }
 
 .backLink:hover .backIcon {
-    background-image: url('../assets/icons/back button hover.svg'); 
+    /* FIXED: Replaced spaces with underscores */
+    background-image: url('../assets/icons/back_button_hover.svg'); 
 }
 
 .iconCircle {
@@ -100,7 +102,7 @@ body {
 /* Form Elements */
 .inputGroup {
     position: relative;
-    margin-bottom: 5px;
+    margin-bottom: 15px; /* Bumped from 5px to 15px for better spacing */
 }
 
 .inputIcon {
@@ -111,9 +113,11 @@ body {
     color: #6a767d;
     display: flex;
     align-items: center;
+    pointer-events: none; /* Ensures the icon doesn't block the user from clicking the input */
 }
 
-#emailInput {
+/* FIXED: Changed from #emailInput to target all inputs inside an inputGroup */
+.inputGroup input {
     width: 100%;
     padding: 14px 14px 14px 45px;
     background-color: #1e262b;
@@ -125,11 +129,11 @@ body {
     transition: all 0.3s ease;
 }
 
-#emailInput::placeholder {
+.inputGroup input::placeholder {
     color: #6a767d;
 }
 
-#emailInput:focus {
+.inputGroup input:focus {
     border-color: #00e5ff;
     box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
 }
