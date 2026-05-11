@@ -17,11 +17,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const retakeModal = document.getElementById('retakeModal');
     const confirmRetake = document.getElementById('confirmRetake');
     const cancelRetake = document.getElementById('cancelRetake');
+    
+    // NEW: Smart Review Modal elements
+    const srModalOverlay = document.getElementById('smart-review-modal');
+    const btnCloseSr = document.getElementById('btn-close-sr');
 
     // Setup basic navigation
     btnBack.addEventListener('click', () => window.location.href = 'dashboard');
-    btnHistory.addEventListener('click', () => alert('View History feature coming soon!'));
     
+    const btnViewHistory = document.getElementById('btn-history'); 
+
+    if (btnViewHistory) {
+        btnViewHistory.addEventListener('click', () => {
+            window.location.href = 'quiz_history.html';
+        });
+    }    
+
     // --- RETAKE MODAL LOGIC ---
     if (btnRetake) {
         btnRetake.addEventListener('click', () => {
@@ -32,6 +43,22 @@ document.addEventListener('DOMContentLoaded', () => {
     if (cancelRetake) {
         cancelRetake.addEventListener('click', () => {
             retakeModal.style.display = 'none';
+        });
+    }
+
+    // --- SMART REVIEW MODAL LOGIC ---
+    if (btnCloseSr) {
+        btnCloseSr.addEventListener('click', () => {
+            srModalOverlay.style.display = 'none';
+        });
+    }
+
+    // Close when clicking outside the Smart Review modal
+    if (srModalOverlay) {
+        srModalOverlay.addEventListener('click', (e) => {
+            if (e.target === srModalOverlay) {
+                srModalOverlay.style.display = 'none';
+            }
         });
     }
 
@@ -58,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ---------------------------------------------------------------------
-    // --- NEW: PAGINATION LOGIC ---
+    // --- PAGINATION & RENDERING LOGIC ---
     // ---------------------------------------------------------------------
     const itemsPerPage = 5;
     let currentPage = 1;
@@ -79,6 +106,8 @@ document.addEventListener('DOMContentLoaded', () => {
         pageData.forEach((q, index) => {
             // Keep the absolute question number correct (e.g., Q6, Q7)
             const absoluteQuestionNumber = startIndex + index + 1;
+            // Get the true array index for the Smart Review button data attribute
+            const trueArrayIndex = startIndex + index; 
 
             const iconSvg = q.isCorrect 
                 ? `<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`
@@ -86,6 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const userAnsColor = q.isCorrect ? '#00FFF6' : '#ff4b4b';
 
+            // Notice the data-index attribute added to the button below!
             const cardHTML = `
                 <div class="qr-result-card">
                     <div class="qr-card-left">
@@ -96,13 +126,32 @@ document.addEventListener('DOMContentLoaded', () => {
                             <p>User Answer: <span style="color: ${userAnsColor};">${q.userAnswer}</span></p>
                         </div>
                     </div>
-                    <button class="qr-btn-smart">Smart Review</button>
+                    <button class="qr-btn-smart" data-index="${trueArrayIndex}">Smart Review</button>
                 </div>
             `;
             listContainer.insertAdjacentHTML('beforeend', cardHTML);
         });
     }
-function renderPagination() {
+
+    // --- EVENT DELEGATION FOR SMART REVIEW BUTTONS ---
+    // Because buttons are destroyed and recreated during pagination, we listen on the container.
+    listContainer.addEventListener('click', (e) => {
+        if (e.target.classList.contains('qr-btn-smart')) {
+            const questionIndex = e.target.getAttribute('data-index');
+            const specificQuestionData = resultData.questions[questionIndex];
+
+            // Dynamically update the modal's title to match the clicked question
+            if (specificQuestionData) {
+                const topicHeader = document.querySelector('.sr-topic');
+                if(topicHeader) topicHeader.textContent = `Review: ${specificQuestionData.question}`;
+            }
+            
+            // Open the modal
+            if (srModalOverlay) srModalOverlay.style.display = 'flex';
+        }
+    });
+
+    function renderPagination() {
         paginationContainer.innerHTML = '';
 
         // Hide pagination completely if 5 or fewer questions
@@ -116,7 +165,6 @@ function renderPagination() {
         // 1. Previous Arrow Button (<)
         const prevBtn = document.createElement('button');
         prevBtn.className = 'qr-page-btn arrow-btn';
-        // Using currentColor so it inherits the text color CSS
         prevBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px; height:16px;"><path d="M15 18l-6-6 6-6"/></svg>`;
         
         if (currentPage === 1) {
@@ -140,7 +188,7 @@ function renderPagination() {
             btn.addEventListener('click', () => {
                 currentPage = i;
                 renderList(currentPage);
-                renderPagination(); // Re-render to update the 'active' & 'disabled' classes
+                renderPagination(); 
             });
             
             paginationContainer.appendChild(btn);
@@ -184,6 +232,7 @@ function renderPagination() {
     
     // Animates the circle drawing itself
     setTimeout(() => {
-        document.getElementById('qr-score-circle').style.setProperty('--progress', `${degrees}deg`);
+        const circle = document.getElementById('qr-score-circle');
+        if(circle) circle.style.setProperty('--progress', `${degrees}deg`);
     }, 100);
 });
